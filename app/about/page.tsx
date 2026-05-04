@@ -8,45 +8,37 @@ import Link from "next/link"
 
 const teamMembers = [
   {
-    name: "Jay Shinde",
-    role: "Full Stack Developer",
+    name: "Raashi Lokhande",
+    role: "Computer Science Engineer",
     bio: "Passionate about creating seamless user experiences and robust backend systems.",
     avatar: "/placeholder-user.jpg",
-    initials: "JS",
-    skills: ["React", "Node.js", "TypeScript", "System Design", "MongoDB"]
+    initials: "RL",
+    skills: ["DBMS", "TypeScript", "Python", "Java ", "BlockChain", "AWS", "C","Cpp","SQL","MongoDB"]
   },
   {
-    name: "Swayam Dusing", 
-    role: "Backend Developer",
+    name: "Revant Katuri", 
+    role: "Computer Science Engineer",
     bio: "Specializes in modern web technologies and creating intuitive user interfaces.",
     avatar: "/placeholder-user.jpg",
-    initials: "SD",
-    skills: ["Python", "Django", "MongoDB"]
+    initials: "RK",
+    skills: ["Ui/Ux", "Figma", "MongoDB Atlas"]
   },
   {
-    name: "Shiwani Nanaware",
-    role: "Backend Developer", 
+    name: "Tulsi Jadhav",
+    role: "Computer Science Engineer", 
     bio: "Expert in building scalable APIs and database architecture for high-performance applications.",
     avatar: "/placeholder-user.jpg",
-    initials: "SN",
-    skills: ["React", "Node.js", "TypeScript"]
+    initials: "TJ",
+    skills: ["Python", "Java ", "DBMS", "AWS", "C","Cpp","SQL","MongoDB"]
   },
   {
-    name: "Srushti Ahire",
-    role: "Frontend Developer",
+    name: "Sushrut Wankhade",
+    role: "Computer Science Engineer",
     bio: "Develops intelligent algorithms and machine learning models for personalized learning experiences.",
     avatar: "/placeholder-user.jpg", 
-    initials: "SA",
-    skills: ["React", "Ui/Ux", "Tailwind CSS", "Next.js"]
+    initials: "SW",
+    skills: ["React", "Ui/Ux", "Tailwind CSS", "Next.js","Python", "Java ", "DBMS", "AWS", "C","Cpp","SQL","MongoDB"]
   },
-  {
-    name: "Haiba Khan",
-    role: "Frontend Developer",
-    bio: "Creates user-centered designs that make complex interview preparation simple and engaging.",
-    avatar: "/placeholder-user.jpg",
-    initials: "HK", 
-    skills: ["Figma", "User Research","React", "Ui/Ux", "Tailwind CSS",]
-  }
 ]
 
 const values = [
