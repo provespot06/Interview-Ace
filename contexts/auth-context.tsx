@@ -5,8 +5,8 @@ import { User } from '@/lib/models/User'
 
 interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<boolean>
-  logout: () => void
+  login: (email: string, password: string) => Promise<User | null>
+  logout: () => Promise<void>
   signup: (email: string, password: string, firstName: string, lastName: string) => Promise<boolean>
   isLoading: boolean
 }
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth()
   }, [])
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<User | null> => {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -50,12 +50,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (response.ok) {
         const data = await response.json()
         setUser(data.user)
-        return true
+        return data.user
       }
-      return false
+      return null
     } catch (error) {
       console.error('Login failed:', error)
-      return false
+      return null
     }
   }
 
@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' })
     } catch (error) {

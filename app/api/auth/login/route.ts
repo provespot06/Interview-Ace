@@ -37,7 +37,8 @@ export async function POST(request: NextRequest) {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        preferences: user.preferences
+        preferences: user.preferences,
+        role: user.role
       }
     })
 

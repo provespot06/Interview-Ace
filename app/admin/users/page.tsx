@@ -26,6 +26,8 @@ import {
   Shield,
   User
 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/auth-context"
 
 interface UserProfile {
   _id: string
@@ -49,6 +51,8 @@ interface UserProfile {
 }
 
 export default function UserManagementPage() {
+  const { user, isLoading } = useAuth()
+  const router = useRouter()
   const [users, setUsers] = useState<UserProfile[]>([])
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -78,6 +82,20 @@ export default function UserManagementPage() {
   useEffect(() => {
     fetchUsers()
   }, [searchQuery, pagination.currentPage])
+
+  useEffect(() => {
+    if (!isLoading && (!user || user.role !== "admin")) {
+      router.replace("/admin/login")
+    }
+  }, [isLoading, user, router])
+
+  if (isLoading || !user || user.role !== "admin") {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-sm text-muted-foreground">Checking admin access...</p>
+      </div>
+    )
+  }
 
   const fetchUsers = async () => {
     setLoading(true)

@@ -41,8 +41,8 @@ const navigation = [
   { name: "Aptitude", href: "/aptitude", icon: Calculator },
   { name: "Mock Interview", href: "/interview", icon: Users },
   { name: "Profile", href: "/profile", icon: User },
-  { name: "Admin Panel", href: "/admin/aptitude", icon: Settings },
-  { name: "User Management", href: "/admin/users", icon: Users },
+  { name: "Admin Panel", href: "/admin/aptitude", icon: Settings, adminOnly: true },
+  { name: "User Management", href: "/admin/users", icon: Users, adminOnly: true },
 ]
 
 interface DashboardLayoutProps {
@@ -53,6 +53,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
   const { user, logout } = useAuth()
+  const isAdmin = user?.role === "admin"
 
   const handleLogout = () => {
     logout()
@@ -74,7 +75,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-4 py-6">
-        {navigation.map((item) => {
+        {navigation
+          .filter((item) => !item.adminOnly || isAdmin)
+          .map((item) => {
           const isActive = pathname === item.href
           return (
             <Link
