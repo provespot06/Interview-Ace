@@ -14,9 +14,9 @@ import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/auth-context"
 import { ThemeToggle } from "@/components/theme-toggle"
 
-export default function LoginPage() {
+export default function AdminLoginPage() {
   const router = useRouter()
-  const { login } = useAuth()
+  const { login, logout } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
@@ -32,7 +32,6 @@ export default function LoginPage() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }))
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -61,11 +60,18 @@ export default function LoginPage() {
     setIsLoading(true)
     try {
       const loggedInUser = await login(formData.email, formData.password)
-      if (loggedInUser) {
-        router.push("/dashboard")
-      } else {
+      if (!loggedInUser) {
         setErrors({ email: "Invalid email or password" })
+        return
       }
+
+      if (loggedInUser.role !== "admin") {
+        await logout()
+        setErrors({ email: "Admin access required" })
+        return
+      }
+
+      router.push("/admin/aptitude")
     } catch (error) {
       setErrors({ email: "Login failed. Please try again." })
     } finally {
@@ -76,7 +82,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo and Theme Toggle */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-2 mx-auto">
             <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
@@ -89,8 +94,8 @@ export default function LoginPage() {
 
         <Card className="border-border shadow-lg">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Welcome Back</CardTitle>
-            <CardDescription>Sign in to continue your interview preparation</CardDescription>
+            <CardTitle className="text-2xl">Admin Sign In</CardTitle>
+            <CardDescription>Sign in to manage the platform</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -155,14 +160,8 @@ export default function LoginPage() {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link href="/signup" className="text-accent hover:underline font-medium">
-                  Sign up
-                </Link>
-              </p>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Admin?{" "}
-                <Link href="/admin/login" className="text-accent hover:underline font-medium">
+                Looking for user login?{" "}
+                <Link href="/login" className="text-accent hover:underline font-medium">
                   Sign in here
                 </Link>
               </p>

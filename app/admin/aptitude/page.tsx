@@ -12,6 +12,8 @@ import { DashboardLayout } from "@/components/dashboard-layout"
 import { Plus, Edit, Trash2, Search, RefreshCw, BookOpen, Filter, X, Check, AlertCircle } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/auth-context"
 
 interface AptitudeQuestion {
   _id: string
@@ -25,6 +27,8 @@ interface AptitudeQuestion {
 }
 
 export default function AptitudeAdminPage() {
+  const { user, isLoading } = useAuth()
+  const router = useRouter()
   const [questions, setQuestions] = useState<AptitudeQuestion[]>([])
   const [loading, setLoading] = useState(false)
   const [editingQuestion, setEditingQuestion] = useState<AptitudeQuestion | null>(null)
@@ -74,6 +78,20 @@ export default function AptitudeAdminPage() {
   useEffect(() => {
     fetchQuestions()
   }, [selectedCategory, selectedDifficulty, searchQuery])
+
+  useEffect(() => {
+    if (!isLoading && (!user || user.role !== "admin")) {
+      router.replace("/admin/login")
+    }
+  }, [isLoading, user, router])
+
+  if (isLoading || !user || user.role !== "admin") {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-sm text-muted-foreground">Checking admin access...</p>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -16,6 +16,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid session' }, { status: 401 })
     }
 
+    if (user.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
     const { searchParams } = new URL(request.url)
     const search = searchParams.get('search')
     const page = parseInt(searchParams.get('page') || '1')
@@ -74,6 +78,10 @@ export async function DELETE(request: NextRequest) {
     const user = await validateSession(sessionToken)
     if (!user) {
       return NextResponse.json({ error: 'Invalid session' }, { status: 401 })
+    }
+
+    if (user.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     const { searchParams } = new URL(request.url)

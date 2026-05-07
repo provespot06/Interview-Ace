@@ -21,6 +21,10 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid session' }, { status: 401 })
     }
 
+    if (user.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
     if (!ObjectId.isValid(id)) {
       return NextResponse.json({ error: 'Invalid user ID format' }, { status: 400 })
     }
@@ -60,6 +64,10 @@ export async function PUT(
     const user = await validateSession(sessionToken)
     if (!user) {
       return NextResponse.json({ error: 'Invalid session' }, { status: 401 })
+    }
+
+    if (user.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     if (!ObjectId.isValid(id)) {
